@@ -1,0 +1,81 @@
+{
+    "_type": "News",
+    "instrumentation": {
+        "pingUrlBase": "https://www.bingapis.com/api/ping?IG=8EAC3740311E4593BF35765B236F47AC&CID=070910FF0C0362112C11188E0DD06323&ID=",
+        "pageLoadPingUrl": "https://www.bingapis.com/api/ping/pageload"
+    },
+    "readLink": "https://www.bing.com/api/v5/news/search?q=microsoft",
+    "totalEstimatedMatches": 1170000,
+    "value": [
+        {
+            "name": "Samsung Galaxy TabPro S First impressions: A serious competitor to Microsoft’s Surface lineup",
+            "url": "http://tech.firstpost.com/news-analysis/samsung-galaxy-tabpro-s-first-impressions-a-serious-competitor-to-microsofts-surface-lineup-297978.html/",
+            "urlPingSuffix": "DevEx,5020.1",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.25CDFDFD52AF92BA58B567A1EEFDDC45&pid=News",
+                    "width": 700,
+                    "height": 393
+                }
+            },
+            "description": "We’ve seen a few tablets running Windows 10 announced in the past, but this one is sure to draw all the attention. Firstly, it is Samsung and Microsoft, rivals otherwise, coming together to show the best of both sides. A good looking hybrid with ...",
+            "about": [
+                {
+                    "readLink": "https://www.bing.com/api/v5/entities/cfb4265c-a085-f5ab-f132-74c3ca86d376",
+                    "name": "Samsung Galaxy"
+                },
+                {
+                    "readLink": "https://www.bing.com/api/v5/entities/a093e9b9-90f5-a3d5-c4b8-5855e1b01f85",
+                    "name": "Microsoft"
+                },
+                {
+                    "readLink": "https://www.bing.com/api/v5/entities/46f1ab09-6fd7-5f05-6e27-3a1aeb6cae45",
+                    "name": "Impression"
+                }
+            ],
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "Tech2"
+                }
+            ],
+            "datePublished": "2016-02-05T07:01:00",
+            "category": "ScienceAndTechnology"
+        },
+        {
+            "name": "Microsoft Releases Windows 10 Mobile Build 10586.71 to All Testers",
+            "url": "http://news.softpedia.com/news/microsoft-releases-windows-10-mobile-build-10586-71-to-all-testers-499959.shtml",
+            "urlPingSuffix": "DevEx,5022.1",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.5AD6B7BC824F5A8E6F6ED5B7DA1C906E&pid=News",
+                    "width": 700,
+                    "height": 452
+                }
+            },
+            "description": "The Windows 10 Mobile development process seems to advance pretty nicely, with Microsoft deciding to roll out the most recent build to members of the slow ring too. Basically, builds are pushed to the slow ring only when the Windows development team ...",
+            "about": [
+                {
+                    "readLink": "https://www.bing.com/api/v5/entities/16aeb6d9-9098-0a40-4970-8e46a4fcee12",
+                    "name": "Microsoft Windows"
+                },
+                {
+                    "readLink": "https://www.bing.com/api/v5/entities/a093e9b9-90f5-a3d5-c4b8-5855e1b01f85",
+                    "name": "Microsoft"
+                },
+                {
+                    "readLink": "https://www.bing.com/api/v5/entities/fd31547a-9016-4940-b644-78988670c18a",
+                    "name": "Build"
+                }
+            ],
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "Softpedia News"
+                }
+            ],
+            "datePublished": "2016-02-05T05:35:00",
+            "category": "ScienceAndTechnology"
+        }
+    ]
+}

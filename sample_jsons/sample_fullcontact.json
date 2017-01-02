@@ -1,0 +1,128 @@
+{
+  "status" : 200,
+  "requestId" : "afcb91dc-31a7-4383-bb91-d48afe221bf4",
+  "category" : [ {
+    "name" : "Other",
+    "code" : "OTHER"
+  } ],
+  "logo" : "https://d2ojpxxtu63wzl.cloudfront.net/static/b560062037213e5dd697ef328cecdd3c_9c5671e1cd34db87e3d8bbfb230555c37b4572c9769d40c5eb04b6233b0e2a57",
+  "website" : "http://www.google.com",
+  "languageLocale" : "en",
+  "onlineSince" : "1997-09-15",
+  "organization" : {
+    "name" : "Google Inc.",
+    "approxEmployees" : 50000,
+    "founded" : "1998",
+    "overview" : "Google’s mission is to organize the world’s information and make it universally accessible and useful.",
+    "contactInfo" : {
+      "addresses" : [ {
+        "addressLine1" : "1600 Amphitheatre Parkway",
+        "locality" : "Mountain View",
+        "region" : {
+          "name" : "California",
+          "code" : "CA"
+        },
+        "country" : {
+          "name" : "United States",
+          "code" : "US"
+        },
+        "postalCode" : "94043",
+        "label" : "work"
+      } ]
+    },
+    "links" : [ {
+      "url" : "https://www.google.com/work/mapsearth/products/mapsapi.html",
+      "label" : "other"
+    } ],
+    "images" : [ {
+      "url" : "https://d2ojpxxtu63wzl.cloudfront.net/static/0c679961448ebd7a306a46fc146ddde9_be5ddde7b929b237e67e61a2d0ec2d9ae81fbaef8855b017b9fc484a8c67137d",
+      "label" : "facebook"
+    }, {
+      "url" : "https://d2ojpxxtu63wzl.cloudfront.net/static/bc35956738af67aa4e219566118d2d0b_5cb3b7ef580990cb64b496d51d20acaa4f7b1655f3d040190acf726eab57fe5e",
+      "label" : "facebook"
+    }, {
+      "url" : "https://d2ojpxxtu63wzl.cloudfront.net/static/49feaccd430ad2f7a0936af2113bbeee_c0b8803dbed799f866c5bb1b85d72a982f56612388542671e22ea246ee02da0f",
+      "label" : "twitter"
+    }, {
+      "url" : "https://d2ojpxxtu63wzl.cloudfront.net/static/bcdf9d5a32fc4ef4205c9e7061e42ded_61782b0d1be18d8d26b0d0558959154035515268259e34ba142709a49e32a19a",
+      "label" : "logo"
+    }, {
+      "url" : "https://d2ojpxxtu63wzl.cloudfront.net/static/083b72cc2d980493f79f4fc597712599_e08a882b04254ab7646a54dd15818d304896b2f97950eec6ce828979f418f177",
+      "label" : "favicon"
+    }, {
+      "url" : "https://d2ojpxxtu63wzl.cloudfront.net/static/063f494725052cb2370362eacb41dabc_b1d1f228fcc35edf5b996770ba2b11ae464a798fe6d39a5563f06dbb08a86308",
+      "label" : "other"
+    } ],
+    "keywords" : [ "Advertising", "Apps", "Email", "Google", "Internet", "Maps", "Mountain View", "Search", "Software", "Technology" ]
+  },
+  "socialProfiles" : [ {
+    "typeId" : "facebook",
+    "typeName" : "Facebook",
+    "url" : "https://www.facebook.com/Google"
+  }, {
+    "bio" : "News and updates from Google",
+    "followers" : 12181689,
+    "following" : 447,
+    "typeId" : "twitter",
+    "typeName" : "Twitter",
+    "url" : "https://twitter.com/google",
+    "username" : "google",
+    "id" : "20536157"
+  }, {
+    "bio" : "Google’s mission is to organize the world’s information and make it universally accessible and useful.",
+    "followers" : 8946,
+    "typeId" : "angellist",
+    "typeName" : "AngelList",
+    "url" : "https://angel.co/google",
+    "username" : "google",
+    "id" : "32203"
+  }, {
+    "bio" : "The Google Maps APIs are a collection of APIs that enable you to overlay your own data on a customized Google Map.",
+    "typeId" : "crunchbasecompany",
+    "typeName" : "CrunchBase",
+    "url" : "http://www.crunchbase.com/organization/google-7",
+    "username" : "google-7"
+  }, {
+    "typeId" : "crunchbasecompany",
+    "typeName" : "CrunchBase",
+    "url" : "http://www.crunchbase.com/organization/google",
+    "username" : "google"
+  }, {
+    "typeId" : "google",
+    "typeName" : "GooglePlus",
+    "url" : "https://plus.google.com/+google",
+    "username" : "google"
+  }, {
+    "typeId" : "klout",
+    "typeName" : "Klout",
+    "url" : "http://klout.com/google",
+    "username" : "google",
+    "id" : "456520"
+  }, {
+    "bio" : "Google’s mission is to organize the world‘s information and make it universally accessible and useful.\n\n Since our founding in 1998, Google has grown by leaps and bounds. From offering search in a single language we now offer dozens of products and services—including various forms of advertising and web applications for all kinds of tasks—in scores of languages. And starting from two computer science students in a university dorm room, we now have thousands of employees and offices around the world. A lot has changed since the first Google search engine appeared. But some things haven’t changed: our dedication to our users and our belief in the possibilities of the Internet itself.",
+    "typeId" : "linkedincompany",
+    "typeName" : "LinkedIn",
+    "url" : "https://www.linkedin.com/company/google",
+    "username" : "google",
+    "id" : "1441"
+  } ],
+  "traffic" : {
+    "topCountryRanking" : [ {
+      "rank" : 1,
+      "locale" : "us"
+    }, {
+      "rank" : 3,
+      "locale" : "in"
+    }, {
+      "rank" : 11,
+      "locale" : "cn"
+    } ],
+    "ranking" : [ {
+      "rank" : 1,
+      "locale" : "global"
+    }, {
+      "rank" : 1,
+      "locale" : "us"
+    } ]
+  }
+}
