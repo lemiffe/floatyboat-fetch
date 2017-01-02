@@ -18,10 +18,13 @@
 
 - python3 main.py
 
-## Deploying
+## Deploying (using dokku)
 
 - Note: Change these values for those of your own server
-- Pending
+- git push dokku master
+
+Set up config.ini (only once) on the server, to auto-mount after deploy:
+- dokku storage:mount floatyboat /home/config.ini:/app/config.ini (make sure config.ini is on your dest. server)
 
 ## Sample Record
 

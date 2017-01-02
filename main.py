@@ -43,10 +43,8 @@ FAKE_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/5
 
 # Change directory to the location of this script
 abspath = os.path.abspath(__file__)
-print(abspath)
 dname = os.path.dirname(abspath)
-print(dname)
-#os.chdir(dname)
+os.chdir(dname)
 
 config = configparser.ConfigParser()
 config.read('config.ini')
