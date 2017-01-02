@@ -6,6 +6,6 @@ from main import *
 
 if __name__ == "__main__":
         http_server = HTTPServer(WSGIContainer(app))
-        port = int(os.environ.get("PORT", 1337))
+        port = int(os.environ.get("PORT", 5000))
         http_server.listen(port)
         IOLoop.instance().start()

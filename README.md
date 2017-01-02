@@ -18,6 +18,10 @@
 
 - python3 main.py
 
+## Endpoints
+
+- This section is under construction (see main.py for more info for now)
+
 ## Deploying (using dokku)
 
 - Note: Change these values for those of your own server

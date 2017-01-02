@@ -82,6 +82,5 @@ RUN ls -la /app
 RUN pip3 install -r /app/requirements.txt
 WORKDIR /app
 
-EXPOSE 1337
-
+EXPOSE 5000
 CMD ["python3", "/app/run.py"]
