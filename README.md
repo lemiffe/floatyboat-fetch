@@ -23,8 +23,10 @@
 - Note: Change these values for those of your own server
 - git push dokku master
 
-Set up config.ini (only once) on the server, to auto-mount after deploy:
+**Set up required files:**
+- config.ini and floaty.json should exist on the server as well, but we can auto-mount with dokku:
 - dokku storage:mount floatyboat /home/config.ini:/app/config.ini (make sure config.ini is on your dest. server)
+- dokku storage:mount floatyboat /home/floaty.json:/app/floaty.json (make sure config.ini is on your dest. server)
 
 ## Sample Record
 
