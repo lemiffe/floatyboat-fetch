@@ -32,6 +32,10 @@
 - dokku storage:mount floatyboat /home/config.ini:/app/config.ini (make sure config.ini is on your dest. server)
 - dokku storage:mount floatyboat /home/floaty.json:/app/floaty.json (make sure config.ini is on your dest. server)
 
+**Set up the ports:**
+- dokku proxy:ports floatyboat (see list of ports, see the port of your container)
+- dokku proxy:ports-add floatyboat http:1337:5000 (host 1337 will map to your container now)
+
 ## Sample Record
 
 ```

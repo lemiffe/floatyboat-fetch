@@ -82,18 +82,24 @@ fire_db = firebase.database()
 
 # region External Services (bing, glassdoor, etc.)
 
-def search_glassdoor(company_name, page_size="20"):
+def search_glassdoor(company_name, page_size="20", ua=None, ip=None):
     """Returns list of matching companies (or empty list)"""
     obj = None
-    useragent = 'Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010_10_1)%20AppleWebKit'
-    useragent += '%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F39.0.2171.95%20Safari%2F537.36'
-    useragent += '.' + str(randint(0, 10000))  # Add a bit of randomness to avoid hitting limits
+    useragent = ua
+    # Construct user agent
+    if useragent is None or useragent == '':
+        useragent = 'Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010_10_1)%20AppleWebKit'
+        useragent += '%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F39.0.2171.95%20Safari%2F537.36'
+        useragent += '.' + str(randint(0, 10000))  # Add a bit of randomness to avoid hitting limits
+    userip = ip
+    if userip is None or userip == '':
+        userip = '0.0.0.0'
     url = 'http://api.glassdoor.com/api/api.htm?t.p='
     url += config['glassdoor']['glassDoorPartnerId']
     url += '&t.k=' + config['glassdoor']['glassDoorPartnerKey']
     if page_size != "20":
         url += '&ps=' + page_size
-    url += '&userip=0.0.0.0&useragent=' + useragent + '&format=json&v=1&action=employers&q='
+    url += '&userip=' + userip + '&useragent=' + useragent + '&format=json&v=1&action=employers&q='
     url += company_name
     headers = {'User-Agent': FAKE_USER_AGENT}
     r = requests.request('GET', url, headers=headers)
@@ -259,11 +265,11 @@ def request_stock(company):
 
 # region Internal Functions
 
-def construct_companies(company_name, company_name_clean, limit_to_this_id=None, existing_valuations_for_this_id=None):
+def construct_companies(company_name, company_name_clean, limit_to_this_id=None, existing_valuations_for_this_id=None, ua=None, ip=None):
     results = []
 
     # Search Glassdoor (larger page size if looking for 1 ID as they only have name search so we must try to find it!)
-    glassdoor_results = search_glassdoor(company_name, '20' if limit_to_this_id is None else '50')
+    glassdoor_results = search_glassdoor(company_name, '20' if limit_to_this_id is None else '50', ua, ip)
     if len(glassdoor_results) == 0:
         return []
 
@@ -578,7 +584,9 @@ def company_create(company):
 
     # Construct company (search glassdoor, find all data, generate result object)
     try:
-        companies = construct_companies(company, company_name_search)
+        ua = request.args.get('ua')  # Optional user agent
+        ip = request.args.get('ip')  # Optional ip
+        companies = construct_companies(company, company_name_search, None, None, ua, ip)
         if len(companies) == 0:
             return make_error({'status': STATUS_ERROR, 'message': 'Company not found on GD'}, 404)
     except Exception as e:
