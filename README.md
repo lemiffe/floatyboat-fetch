@@ -19,6 +19,11 @@
 
 - python3 main.py
 
+**Getting server errors due to an invalid JWT when accessing Glassdoor?**
+- You might be developing on a mac and your docker time is out of sync
+- Quickly fix on the running container by running the following command:
+- docker run --rm --privileged floatyboat date -s "`date -u`"
+
 ## Endpoints
 
 - This section is under construction (see main.py for more info for now)

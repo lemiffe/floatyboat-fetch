@@ -75,6 +75,10 @@ RUN cd /usr/local/bin \
 	&& ln -s python3 python \
 	&& ln -s python3-config python-config
 
+# Update DateTime
+# RUN apt-get update && apt-get upgrade -y && apt-get install -y ntp && ntpd -gq && service ntp start
+
+# Install App
 RUN mkdir /app
 COPY . /app/
 RUN cd /app
