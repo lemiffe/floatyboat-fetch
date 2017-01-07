@@ -13,6 +13,7 @@
 ## Installation (alternative: in a docker container)
 
 - ./start-docker.sh
+- Access locally at port 1337 (proxied to the container's 5000 port)
 
 ## Running (locally for development purposes)
 
