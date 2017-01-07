@@ -126,5 +126,3 @@ glassDoorID: {
 - Twitter/News search and sentiment analysis (started)
 - Improved stock market search (when multiple companies are found in the results)
 - Aggregate from more sources (to make sure if one of them fails we can fall back on more data for analysis!)
-- Glassdoor has no data for some companies - do not show "sunk" for those (check the gd_ variables)
-- Partial searches (e.g. we might have 10 items with name "amazon" but gd_name_full "Amazon Centre", searching for the latter will give 0 results at the moment

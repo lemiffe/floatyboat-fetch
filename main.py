@@ -289,6 +289,7 @@ def construct_companies(company_name, company_name_clean, limit_to_this_id=None,
         gd_ceo_pct_approval = float(item['ceo']['pctApprove']) if 'ceo' in item else 100
         gd_id = item['id']
         gd_name_real = item['name']
+        gd_name_lower = item['name'].lower().strip()
         gd_square_logo = item['squareLogo'] if ('squareLogo' in item and item['squareLogo'] is not None and item['squareLogo'].strip() != '') else None
         gd_website = item['website'] if ('website' in item and item['website'] is not None and item['website'].strip() != '') else None
         gd_industry = item['industry'] if ('industry' in item and item['industry'] is not None and item['industry'].strip() != '') else None
@@ -371,6 +372,7 @@ def construct_companies(company_name, company_name_clean, limit_to_this_id=None,
             },
             'gd_id': gd_id,
             'gd_name_real': gd_name_real,
+            'gd_name_lower': gd_name_lower,
             'gd_square_logo': gd_square_logo,
             'gd_website': gd_website,
             'gd_industry': gd_industry,
@@ -407,14 +409,27 @@ def construct_companies(company_name, company_name_clean, limit_to_this_id=None,
             company_data['valuations'][str(update_date)]['stock_lo'] = stock_score
 
         # Calculate rank (%) for the new variation
-        # 80% GD, 10% Social, 5% Stock, 3% Klout, 2% "in top 5000 traffic rank"
-        val_gd_pct = float(gd_overall_rating / 5) * 0.8
-        val_soc_pct = 0.10 if not sentiment_found else float(social_sentiment) * 0.10
-        val_stock_pct = 0.05 if not stock_found else float(stock_score) * 0.05
-        val_klout_pct = 0.03 if not klout_found else float(klout_score / 100) * 0.03
-        val_traffic_pct = 0 if (fc_traffic_global_rank is None or fc_traffic_global_rank > 5000) else 0.02
-        valuation_total_score = float(val_gd_pct + val_soc_pct + val_stock_pct + val_klout_pct + val_traffic_pct)
-        company_data['valuations'][str(update_date)]['valuation_total_score'] = valuation_total_score
+        if gd_overall_rating == 0 and gd_number_of_ratings == 0:
+            # IF THERE IS NO GD DATA, TAKE IT OUT OF THE EQUATION
+            # 0% GD, 60% Social, 15% Stock, 20% Klout, 5% "in top 5000 traffic rank"
+            val_gd_pct = 0
+            val_soc_pct = 0.60 if not sentiment_found else float(social_sentiment) * 0.60
+            val_stock_pct = 0.15 if not stock_found else float(stock_score) * 0.15
+            val_klout_pct = 0.20 if not klout_found else float(klout_score / 100) * 0.20
+            val_traffic_pct = 0 if (fc_traffic_global_rank is None or fc_traffic_global_rank > 5000) else 0.05
+            valuation_total_score = float(val_gd_pct + val_soc_pct + val_stock_pct + val_klout_pct + val_traffic_pct)
+            company_data['valuations'][str(update_date)]['valuation_total_score'] = valuation_total_score
+
+        else:
+            # GD DATA FOUND
+            # 80% GD, 10% Social, 5% Stock, 3% Klout, 2% "in top 5000 traffic rank"
+            val_gd_pct = float(gd_overall_rating / 5) * 0.8
+            val_soc_pct = 0.10 if not sentiment_found else float(social_sentiment) * 0.10
+            val_stock_pct = 0.05 if not stock_found else float(stock_score) * 0.05
+            val_klout_pct = 0.03 if not klout_found else float(klout_score / 100) * 0.03
+            val_traffic_pct = 0 if (fc_traffic_global_rank is None or fc_traffic_global_rank > 5000) else 0.02
+            valuation_total_score = float(val_gd_pct + val_soc_pct + val_stock_pct + val_klout_pct + val_traffic_pct)
+            company_data['valuations'][str(update_date)]['valuation_total_score'] = valuation_total_score
 
         # Get the incline
         oldest_valuation_key = None
@@ -451,9 +466,11 @@ def construct_companies(company_name, company_name_clean, limit_to_this_id=None,
                     boat_status = 'surfacing'
                 elif pct_valuation_change < -0.05:
                     boat_status = 'sinking'
-            elif last_valuation_score < 0.3:
+            elif last_valuation_score < 0.3 and gd_number_of_ratings > 0:
                 boat_status = 'sunk'
                 # TODO: Detect if company still exists, if not then it also counts as sunk!
+            elif last_valuation_score < 0.3 and gd_number_of_ratings == 0:
+                boat_status = 'unknown'
         company_data['boat_status'] = boat_status
 
         # Determine average monthly score
@@ -509,27 +526,42 @@ def search_company(company):
         return make_error({'status': STATUS_ERROR, 'message': 'Name was not entered or is not formatted correctly'}, 400)
 
     # Search for items based on name, if none found return "not found"
+    actual_search_results = []
     try:
+        # Search based on exact name (gd_name might be "Google Ventures, Inc." and name is "google")
         search_results = fire_db.child("companies").order_by_child("name").equal_to(company_name_search).limit_to_first(10).get()
         if search_results.val() is None or len(search_results.val()) == 0:
-            err_msg = 'We could not find a company with this name in our database'
-            return make_error({'status': STATUS_NOT_FOUND, 'action': '/company/{NAME}/create', 'message': err_msg}, 404)
+            # Real name search
+            # e.g. user entered "Google Ventures", we can search gd_name_lower for a match instead of name ("google")
+            search_results = fire_db.child("companies").order_by_child("gd_name_lower").start_at(
+                company_name_search).limit_to_first(10).get()
+            for item in search_results.each():
+                item_data = item.val()
+                if item_data and item_data['gd_name_lower'].lower().strip().startswith(company_name_search):
+                    actual_search_results.append(item.val())
+        else:
+            for item in search_results.each():
+                actual_search_results.append(item.val())
     except Exception as e:
         sentry.captureException()
         return make_error({'status': STATUS_ERROR, 'message': 'Server error (500)'}, 500)
+
+    # No results? no service!
+    if len(actual_search_results) == 0:
+        err_msg = 'We could not find a company with this name in our database (2)'
+        return make_error(
+            {'status': STATUS_NOT_FOUND, 'action': '/company/{NAME}/create', 'message': err_msg}, 404)
 
     # Form a list of results based on Firebase's data (and check if each item is up to date)
     try:
         results = []
         global_status = 'success'
         items_needing_update = 0
-        for item in search_results.each():
-            item_data = item.val()
-            if item_data:
-                result_company = prepare_result(item_data)
-                if result_company['status'] == STATUS_UPDATE_REQUIRED:
-                    items_needing_update += 1
-                results.append(result_company)
+        for item_data in actual_search_results:
+            result_company = prepare_result(item_data)
+            if result_company['status'] == STATUS_UPDATE_REQUIRED:
+                items_needing_update += 1
+            results.append(result_company)
 
         # If all items require an update, set global status to that
         if items_needing_update == len(results):
