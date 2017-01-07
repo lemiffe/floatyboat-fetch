@@ -24,17 +24,36 @@
 
 ## Deploying (using dokku)
 
-- Note: Change these values for those of your own server
 - git push dokku master
 
-**Set up required files:**
-- config.ini and floaty.json should exist on the server as well, but we can auto-mount with dokku:
+## Dokku set up
+
+**Set up Dokku + remote:**
+- Make sure you have an initialised git repository in the project's root
+- git remote add dokku dokku@your.ip.address:floatyboat
+- SSH into your server
+- wget https://raw.githubusercontent.com/dokku/dokku/v0.7.2/bootstrap.sh
+- sudo DOKKU_TAG=v0.7.2 bash bootstrap.sh
+- Go to your server's IP address and follow the installer
+
+**Set up required files (on server):**
+- config.ini and floaty.json should exist on the server, we can auto-mount during deploy with dokku:
 - dokku storage:mount floatyboat /home/config.ini:/app/config.ini (make sure config.ini is on your dest. server)
 - dokku storage:mount floatyboat /home/floaty.json:/app/floaty.json (make sure config.ini is on your dest. server)
+
+**Set up the domain (on the server):**
+- dokku domains floatyboat
+- dokku domains:add floatyboat api.yourdomain.com
+- dokku config:set boatyboat DOKKU_NGINX_PORT=80
 
 **Set up the ports:**
 - dokku proxy:ports floatyboat (see list of ports, see the port of your container)
 - dokku proxy:ports-add floatyboat http:1337:5000 (host 1337 will map to your container now)
+- dokku proxy:ports-add floatyboat https:1337:5000 (host 1337 will map to your container now)
+- If adding https fails, first set up letsencrypt (see boatyboat setup instructions, use api.yourapp.com)
+
+**Frontend setup:**
+- See "boatyboat" repository README for instructions (including setting up the domain and letsencrypt)
 
 ## Sample Record
 
