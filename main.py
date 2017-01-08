@@ -550,7 +550,7 @@ def search_company(company):
     if len(actual_search_results) == 0:
         err_msg = 'We could not find a company with this name in our database (2)'
         return make_error(
-            {'status': STATUS_NOT_FOUND, 'action': '/company/{NAME}/create', 'message': err_msg}, 404)
+            {'status': STATUS_NOT_FOUND, 'action': '/company/{NAME}/create', 'message': err_msg}, 200)
 
     # Form a list of results based on Firebase's data (and check if each item is up to date)
     try:

@@ -126,3 +126,4 @@ glassDoorID: {
 - Twitter/News search and sentiment analysis (started)
 - Improved stock market search (when multiple companies are found in the results)
 - Aggregate from more sources (to make sure if one of them fails we can fall back on more data for analysis!)
+- Search by domain name... so even if there is no glassdoor company we can search fullcontact and other places!
