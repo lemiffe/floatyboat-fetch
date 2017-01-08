@@ -120,6 +120,21 @@ glassDoorID: {
 }
 ```
 
+## Firebase Configuration
+
+**Minimum rules for indexing / search:**
+```
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    "companies": {
+      ".indexOn": ["name", "valuation_4_week_avg_score", "gd_id", "gd_name_lower"]
+    }
+  }
+}
+```
+
 ## To-Do
 
 - Docker contaier should have cron to trigger update for top 200 companies on a weekly basis
