@@ -528,17 +528,19 @@ def search_company(company):
     # Search for items based on name, if none found return "not found"
     actual_search_results = []
     try:
-        # Search based on exact name (gd_name might be "Google Ventures, Inc." and name is "google")
+        # Search based on exact "search" name (gd_name might be "Google Ventures, Inc." and name is "google")
         search_results = fire_db.child("companies").order_by_child("name").equal_to(company_name_search).limit_to_first(10).get()
         if search_results.val() is None or len(search_results.val()) == 0:
+            # TODO: domain search if ".tld" is in the search term
             # Real name search
             # e.g. user entered "Google Ventures", we can search gd_name_lower for a match instead of name ("google")
             search_results = fire_db.child("companies").order_by_child("gd_name_lower").start_at(
                 company_name_search).limit_to_first(10).get()
-            for item in search_results.each():
-                item_data = item.val()
-                if item_data and item_data['gd_name_lower'].lower().strip().startswith(company_name_search):
-                    actual_search_results.append(item.val())
+            if search_results.val() is not None and len(search_results.val()) > 0:
+                for item in search_results.each():
+                    item_data = item.val()
+                    if item_data and item_data['gd_name_lower'].lower().strip().startswith(company_name_search):
+                        actual_search_results.append(item.val())
         else:
             for item in search_results.each():
                 actual_search_results.append(item.val())
