@@ -17,7 +17,7 @@
 
 ## Running (locally for development purposes)
 
-- python3 main.py
+- python3 main.py -p 1337
 
 **Getting server errors due to an invalid JWT when accessing Glassdoor?**
 - You might be developing on a mac and your docker time is out of sync

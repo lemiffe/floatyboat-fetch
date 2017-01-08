@@ -23,6 +23,7 @@ from raven.contrib.flask import Sentry
 import logging
 from random import randint
 import requests
+import getopt
 
 # endregion
 
@@ -72,10 +73,18 @@ firebase_config = {
   "serviceAccount": config['firebase']['firebaseServiceJson']
 }
 
+# Firebase auth method
+def firebase_authenticate(fb):
+    auth = fb.auth()
+    user = auth.sign_in_with_email_and_password(
+        config['firebase']['firebaseUser'],
+        config['firebase']['firebasePassword']
+    )
+    return auth, user
+
 # Initialise Firebase
 firebase = pyrebase.initialize_app(firebase_config)
-firebase_auth = firebase.auth()
-firebase_user = firebase_auth.sign_in_with_email_and_password(config['firebase']['firebaseUser'], config['firebase']['firebasePassword'])
+firebase_authenticate(firebase)
 fire_db = firebase.database()
 
 # endregion
@@ -519,7 +528,7 @@ def prepare_result(company):
 
 @app.route("/search/<string:company>", methods=['GET'])
 @limiter.limit("100 per hour")
-def search_company(company):
+def search_company(company, isRetry=False):
     # Lowercase (for search) + validate
     company_name_search = company.lower().strip()
     if company_name_search == '':
@@ -544,6 +553,14 @@ def search_company(company):
         else:
             for item in search_results.each():
                 actual_search_results.append(item.val())
+    except HTTPError as e:
+        if not isRetry:
+            # Re-auth and retry
+            firebase_authenticate(firebase)
+            return search_company(company, True)
+        else:
+            sentry.captureException()
+            return make_error({'status': STATUS_ERROR, 'message': 'Server error (500)'}, 500)
     except Exception as e:
         sentry.captureException()
         return make_error({'status': STATUS_ERROR, 'message': 'Server error (500)'}, 500)
@@ -773,6 +790,16 @@ def make_error(obj, code=400):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+    port = 5000
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "p:", ["port="])
+    except getopt.GetoptError:
+        print('main.py -p <port>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt in ("-p", "--port"):
+            port = int(arg)
+
+    app.run(host='0.0.0.0', port=port)
 
 # endregion
