@@ -512,7 +512,7 @@ def construct_company_for_update(company_id, gd_name_real, db_record_company):
 def item_needs_update(timestamp_last_updated):
     item_last_updated = datetime.utcfromtimestamp(int(timestamp_last_updated))
     current_datetime = datetime.utcnow()
-    hours_difference = (current_datetime - item_last_updated).seconds / 60 / 60
+    hours_difference = (current_datetime - item_last_updated).total_seconds() / 60 / 60
     return hours_difference > 168
 
 def prepare_result(company):
