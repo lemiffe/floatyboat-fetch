@@ -319,11 +319,11 @@ def construct_companies(company_name, company_name_clean, limit_to_this_id=None,
                 fc_item = search_fullcontact(gd_website)
                 if fc_item is not None:
                     fc_found = True
-                    fc_name_full = fc_item['organization']['name'] if 'organization' in fc_item else ''
+                    fc_name_full = fc_item['organization']['name'] if 'organization' in fc_item['organization'] else ''
+                    fc_aprox_employees = int(fc_item['organization']['approxEmployees']) if 'approxEmployees' in fc_item['organization'] else 0
+                    fc_founded = fc_item['organization']['approxEmployees'] if 'approxEmployees' in fc_item['organization'] else 0
+                    fc_keywords = ', '.join(fc_item['organization']['keywords']) if 'keywords' in fc_item['organization'] else ''
                     fc_language = fc_item['languageLocale'] if 'languageLocale' in fc_item else ''
-                    fc_aprox_employees = int(fc_item['organization']['approxEmployees']) if 'organization' in fc_item else 0
-                    fc_founded = fc_item['organization']['approxEmployees'] if 'organization' in fc_item else 0
-                    fc_keywords = ', '.join(fc_item['organization']['keywords']) if 'organization' in fc_item else ''
                     if 'traffic' in fc_item and 'ranking' in fc_item['traffic']:
                         ranks = fc_item['traffic']['ranking']
                         for rank in ranks:
@@ -553,7 +553,7 @@ def search_company(company, isRetry=False):
         else:
             for item in search_results.each():
                 actual_search_results.append(item.val())
-    except HTTPError as e:
+    except Exception as e:
         if not isRetry:
             # Re-auth and retry
             firebase_authenticate(firebase)
@@ -561,9 +561,6 @@ def search_company(company, isRetry=False):
         else:
             sentry.captureException()
             return make_error({'status': STATUS_ERROR, 'message': 'Server error (500)'}, 500)
-    except Exception as e:
-        sentry.captureException()
-        return make_error({'status': STATUS_ERROR, 'message': 'Server error (500)'}, 500)
 
     # No results? no service!
     if len(actual_search_results) == 0:
@@ -616,7 +613,7 @@ def company_get_one(company_id):
     return success({'status': call_status, 'result': result_company})
 
 @app.route("/company/<string:company>/create", methods=['GET'])
-@limiter.limit("5 per hour")
+@limiter.limit("100 per hour")
 def company_create(company):
     # Lowercase (for search) + validate
     company_name_search = company.lower().strip()
